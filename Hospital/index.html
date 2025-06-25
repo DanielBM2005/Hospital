@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulación de Llamado - Hospital</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin-top: 100px; }
+        button { padding: 20px 40px; margin: 20px; border: none; border-radius: 10px; font-size: 18px; cursor: pointer; }
+        .call { background-color: #007bff; color: white; }
+        .attention { background-color: #28a745; color: white; }
+        .cancel { background-color: #dc3545; color: white; }
+    </style>
+</head>
+<body>
+
+    <h1>Gestión de Atención</h1>
+    <div class="d-grid gap-0 col-4 mx-auto">
+        <button class="attention" onclick="sendMessage('llamado')"><i class="bi bi-person-raised-hand"></i> Iniciar Atención</button>
+        <button class="call" onclick="sendMessage('emergencia')"><i class="bi bi-bell-fill"></i> Llamado de Emergencia</button>
+        <button class="cancel" onclick="sendMessage('Llamado atendido')"><i class="bi bi-stop-circle"></i> Finalizar Atención</button>
+    </div>
+
+    <script>
+        function sendMessage(evento) {
+            fetch(`http://127.0.0.1:8000/enviar/${evento}`, {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('Evento enviado: ' + data.evento);
+                console.log(data);
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>
