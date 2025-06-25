@@ -39,8 +39,7 @@ connect_mqtt()
 async def serve_index():
     return FileResponse("index.html")
 
-@app.post("/enviar/{cama}/{evento}")
-async def enviar_evento(cama: int, evento: str):
-    topic = f"hospital/camas_{cama}"
+@app.post("/enviar/{evento}")
+async def enviar_evento(evento: str):
     mqtt.publish(topic, f'{{"status": "{evento}"}}')
-    return {"status": "success", "evento": evento, "cama": cama}
+    return {"status": "success", "evento": evento}
