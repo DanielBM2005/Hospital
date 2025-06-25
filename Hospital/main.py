@@ -14,7 +14,6 @@ app.add_middleware(
 
 broker = "35.193.246.15"
 port = 1883
-topic = "hospital/camas_407"
 client_id = f'fastapi-mqtt-{random.randint(0, 1000)}'
 
 mqtt = mqtt_client.Client(
@@ -40,7 +39,8 @@ connect_mqtt()
 async def serve_index():
     return FileResponse("index.html")
 
-@app.post("/enviar/{evento}")
-async def enviar_evento(evento: str):
+@app.post("/enviar/{cama}/{evento}")
+async def enviar_evento(cama: int, evento: str):
+    topic = f"hospital/camas_{cama}"
     mqtt.publish(topic, f'{{"status": "{evento}"}}')
-    return {"status": "success", "evento": evento}
+    return {"status": "success", "evento": evento, "cama": cama}
